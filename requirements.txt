@@ -1,2 +1,5 @@
 flask
+requests
+chromadb
+pdfminer.six
 chatwrap @ git+https://github.com/stefanbertici/chatwrap.git

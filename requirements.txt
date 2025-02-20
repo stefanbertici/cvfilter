@@ -2,4 +2,6 @@ flask
 requests
 chromadb
 pdfminer.six
+celery
+SQLAlchemy
 chatwrap @ git+https://github.com/stefanbertici/chatwrap.git

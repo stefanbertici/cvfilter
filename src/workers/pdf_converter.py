@@ -1,17 +1,23 @@
 import os
 import uuid
-from celery import Celery
 import chromadb
+from celery import Celery
 from flask import Response
 from chatwrap.client import LlmClient
 from pdfminer.high_level import extract_text
 
 CELERY_BROKER_URL = f"sqlalchemy+sqlite:///db.sqlite3"
 CVS_DIR = 'cvs'
+CHROMA_DIR = 'chroma.db'
 
 pdf_converter = Celery('tasks', broker=CELERY_BROKER_URL)
-chroma_client = chromadb.PersistentClient(path='chroma.db')
-collection = chroma_client.get_or_create_collection(name="my_collection")
+chroma_client = chromadb.PersistentClient(CHROMA_DIR)
+collection = chroma_client.get_or_create_collection(
+    name="my_collection",
+    metadata={
+        "hnsw:space": "cosine",
+        "hnsw:search_ef": 100
+    })
 
 @pdf_converter.task
 def convert_pdf(file_name):
